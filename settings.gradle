@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "App_Marvel"
 include ':app'
+include ':core'

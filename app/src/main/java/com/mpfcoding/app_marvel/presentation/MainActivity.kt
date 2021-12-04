@@ -1,7 +1,8 @@
-package com.mpfcoding.app_marvel
+package com.mpfcoding.app_marvel.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.mpfcoding.app_marvel.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
