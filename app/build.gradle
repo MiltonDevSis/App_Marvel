@@ -1,12 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id "androidx.navigation.safeargs"
+    id 'kotlin-parcelize'
 }
 
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: "androidx.navigation.safeargs"
-apply plugin: 'kotlin-parcelize'
 apply from: '../config/detekt/detekt.gradle'
 
 android {
@@ -66,11 +66,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 
-    // Retrofit
-    def retrofit_version = '2.9.0'
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-
     // OkHttp
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
     implementation("com.squareup.okhttp3:okhttp")
@@ -97,7 +92,6 @@ dependencies {
 
     // Other Libs
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
     implementation "androidx.datastore:datastore-preferences:1.0.0-rc02"
 
     // Unit tests
@@ -106,7 +100,7 @@ dependencies {
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2'
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     testImplementation "androidx.room:room-testing:$room_version"
-
+''
     // Instrumentation tests
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
