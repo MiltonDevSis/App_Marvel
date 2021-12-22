@@ -6,14 +6,54 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.mpfcoding.app_marvel.R
+import com.mpfcoding.app_marvel.databinding.FragmentCharactersBinding
+import com.mpfcoding.core.domain.model.Character
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CharactersFragment : Fragment() {
+
+    private var _binding: FragmentCharactersBinding? = null
+    private val binding: FragmentCharactersBinding get() =  _binding!!
+
+    private val charactersAdapter = CharactersAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_characters, container, false)
+    ) = FragmentCharactersBinding.inflate(
+        inflater,
+        container,
+        false
+    ).apply {
+        _binding = this
+    }.root
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initCharactersAdapter()
+
+        charactersAdapter.submitList(
+            listOf(
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"),
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"),
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"),
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"),
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"),
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"),
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"),
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"),
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"),
+                Character("Absorbing man", "http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg")
+            )
+        )
     }
 
+    private fun initCharactersAdapter(){
+        with(binding.recyclerCharacter){ // pode ser usado binding.recyclerView.run{ }
+            setHasFixedSize(true)
+
+            adapter = charactersAdapter
+        }
+    }
 }
