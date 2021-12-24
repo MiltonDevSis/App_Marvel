@@ -1,4 +1,4 @@
-package com.mpfcoding.core.data.network.interceptor
+package com.mpfcoding.app_marvel.framework.network.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response

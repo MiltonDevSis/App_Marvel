@@ -1,6 +1,6 @@
-package com.mpfcoding.core.data.network
+package com.mpfcoding.app_marvel.framework.network
 
-import com.mpfcoding.core.data.network.response.DataWrapperResponse
+import com.mpfcoding.app_marvel.framework.network.response.DataWrapperResponse
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
 

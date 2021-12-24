@@ -1,4 +1,4 @@
-package com.mpfcoding.core.data.network.response
+package com.mpfcoding.app_marvel.framework.network.response
 
 data class DataContainerResponse(
     val results: List<CharacterResponse>

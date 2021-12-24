@@ -1,7 +1,7 @@
 package com.mpfcoding.app_marvel.framework.di
 
 import com.mpfcoding.app_marvel.BuildConfig
-import com.mpfcoding.core.data.network.interceptor.AuthorizationInterceptor
+import com.mpfcoding.app_marvel.framework.network.interceptor.AuthorizationInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
