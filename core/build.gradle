@@ -27,7 +27,7 @@ dependencies {
     implementation "androidx.paging:paging-common:$paging_version"
 
     // javax injection
-    implementation "javax.injection:javax.injection:1"
+    implementation "javax.inject:javax.inject:1"
 
     // coroutines core
      api "org.jetbrains.kotlinx-coroutines-core:$coroutines_version"
