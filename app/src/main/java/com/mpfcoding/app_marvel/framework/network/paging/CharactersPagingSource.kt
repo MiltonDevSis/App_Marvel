@@ -10,17 +10,18 @@ import com.mpfcoding.core.domain.model.Character
 class CharactersPagingSource(
     private val remoteDataSource: CharactersRemoteDataSource<DataWrapperResponse>,
     private val query: String
-): PagingSource<Int, Character>() {
+) : PagingSource<Int, Character>() {
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
-       return try {
+        return try {
             val offset = params.key ?: 0
 
             val queries = hashMapOf(
                 "offset" to offset.toString()
             )
 
-            if(queries.isNotEmpty()){
+            if (query.isNotEmpty()) {
                 queries["nameStartsWith"] = query
             }
 
@@ -32,12 +33,12 @@ class CharactersPagingSource(
             LoadResult.Page(
                 data = response.data.results.map { it.toCharacterModel() },
                 prevKey = null,
-                nextKey = if (responseOffset < totalCharacters){
+                nextKey = if (responseOffset < totalCharacters) {
                     responseOffset + LIMIT
-                }else null
+                } else null
             )
-        }catch (exception: Exception){
-            return LoadResult.Error(exception)
+        } catch (exception: Exception) {
+            LoadResult.Error(exception)
         }
     }
 
@@ -48,7 +49,7 @@ class CharactersPagingSource(
         }
     }
 
-    companion object{
-       private const val LIMIT = 20
+    companion object {
+        private const val LIMIT = 20
     }
 }
