@@ -5,20 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.mpfcoding.app_marvel.R
 import com.mpfcoding.app_marvel.databinding.FragmentCharactersBinding
 import com.mpfcoding.core.domain.model.Character
+import com.mpfcoding.core.usecase.base.ResultStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CharactersFragment : Fragment() {
 
     private var _binding: FragmentCharactersBinding? = null
-    private val binding: FragmentCharactersBinding get() =  _binding!!
+    private val binding: FragmentCharactersBinding get() = _binding!!
 
     private val viewModel: CharactersViewModel by viewModels()
 
@@ -38,19 +42,55 @@ class CharactersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCharactersAdapter()
+        observeInitialLoadState()
 
-       lifecycleScope.launch {
-           viewModel.charactersPagingData("").collect { pagingData ->
-               charactersAdapter.submitData(pagingData)
-           }
-       }
+        lifecycleScope.launch {
+            viewModel.charactersPagingData("").collect { pagingData ->
+                charactersAdapter.submitData(pagingData)
+            }
+        }
     }
 
-    private fun initCharactersAdapter(){
-        with(binding.recyclerCharacter){ // pode ser usado binding.recyclerView.run{ }
+    private fun initCharactersAdapter() {
+        with(binding.recyclerCharacter) { // pode ser usado binding.recyclerView.run{ }
             setHasFixedSize(true)
 
             adapter = charactersAdapter
         }
+    }
+
+    private fun observeInitialLoadState() {
+        lifecycleScope.launch {
+            charactersAdapter.loadStateFlow.collectLatest { loadState ->
+                binding.flipperCharacters.displayedChild = when (loadState.refresh) {
+                    is LoadState.Loading -> {
+                        setShimmerVisibility(true)
+                        FLIPPER_CHILD_LOADING
+                    }
+                    is LoadState.NotLoading -> {
+                        setShimmerVisibility(false)
+                        FLIPPER_CHILD_CHARACTERS
+                    }
+                    is LoadState.Error -> FLIPPER_CHILD_ERROR
+                }
+            }
+        }
+    }
+
+    private fun setShimmerVisibility(visibility: Boolean) {
+        binding.includeViewCharacterLoadingState.shimmerCharacter.run {
+            isVisible = visibility
+            if (visibility) {
+                startShimmer()
+            } else {
+                stopShimmer()
+            }
+        }
+    }
+
+    companion object{
+        private const val FLIPPER_CHILD_LOADING = 0
+        private const val FLIPPER_CHILD_CHARACTERS = 1
+        private const val FLIPPER_CHILD_ERROR = 2
     }
 }
