@@ -59,11 +59,13 @@ class CharactersFragment : Fragment() {
     private fun initCharactersAdapter() {
 
         charactersAdapter = CharactersAdapter()
-
         with(binding.recyclerCharacter) { // pode ser usado binding.recyclerView.run{ }
             setHasFixedSize(true)
-
-            adapter = charactersAdapter
+            adapter = charactersAdapter.withLoadStateFooter(
+                footer = CharactersLoadStateAdapter(
+                    charactersAdapter::retry
+                )
+            )
         }
     }
 
