@@ -1,20 +1,17 @@
 package com.mpfcoding.app_marvel.presentation.characters
 
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
 import com.mpfcoding.core.domain.model.Character
 import com.mpfcoding.core.usecase.GetCharactersUseCase
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -64,14 +61,18 @@ class CharactersViewModelTest {
                 flowOf(pagingDataCharacters)
             )
 
-            val expectedPaginData = pagingDataCharacters
+            val result = charactersViewModel.charactersPagingData("")
 
-            val result = charactersViewModel.charactersPagingData("").first()
+            assertEquals(1, result.count())
+        }
 
-            result.map { resultCharacter ->
-                expectedPaginData.map {
-                   assertEquals(it.name, resultCharacter.name)
-                }
-            }
+    @ExperimentalCoroutinesApi
+    @Test(expected = RuntimeException::class)
+    fun `should throw an exception when the calling to the use case returns an exception`() =
+        runBlockingTest {
+            whenever(getCharactersUseCase.invoke(any()))
+                .thenThrow(RuntimeException())
+
+            charactersViewModel.charactersPagingData("")
         }
 }
