@@ -3,6 +3,8 @@ package com.mpfcoding.app_marvel.presentation.characters
 import androidx.paging.PagingData
 import com.mpfcoding.core.domain.model.Character
 import com.mpfcoding.core.usecase.GetCharactersUseCase
+import com.mpfcoding.testing.MainCoroutineRule
+import com.mpfcoding.testing.model.CharacterFactory
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +18,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -25,30 +28,26 @@ import org.mockito.junit.MockitoJUnitRunner
 class CharactersViewModelTest {
 
     @ExperimentalCoroutinesApi
-    val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
 
     @Mock
     lateinit var getCharactersUseCase: GetCharactersUseCase
 
     private lateinit var charactersViewModel: CharactersViewModel
 
+    private val charactersFactory = CharacterFactory()
+
     private val pagingDataCharacters = PagingData.from(
         listOf(
-            Character(
-                name = "3-D Man",
-                imageUrl = "https://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784.jpg"
-            ),
-            Character(
-                name = "A-Bomb (HAS)",
-                imageUrl = "https://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg"
-            )
+            charactersFactory.create(CharacterFactory.Hero.TreeDMan),
+            charactersFactory.create(CharacterFactory.Hero.Abomb)
         )
     )
 
     @ExperimentalCoroutinesApi
     @Before
     fun setup() {
-        Dispatchers.setMain(testDispatcher)
         charactersViewModel = CharactersViewModel(getCharactersUseCase)
     }
 
@@ -77,11 +76,4 @@ class CharactersViewModelTest {
 
             charactersViewModel.charactersPagingData("")
         }
-
-    @ExperimentalCoroutinesApi
-    @After
-    fun tearDownDispatcher(){
-        Dispatchers.resetMain()
-        testDispatcher.cleanupTestCoroutines()
-    }
 }
