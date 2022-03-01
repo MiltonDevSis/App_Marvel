@@ -20,7 +20,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class CharactersPagingSourceTest{
+class CharactersPagingSourceTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -36,13 +36,13 @@ class CharactersPagingSourceTest{
     private lateinit var charactersPagingSource: CharactersPagingSource
 
     @Before
-    fun setup(){
+    fun setup() {
         charactersPagingSource = CharactersPagingSource(remoteDataSource, "")
     }
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `should return a sucess load result when load is called`() = runBlockingTest{
+    fun `should return a sucess load result when load is called`() = runBlockingTest {
         //arrange
         whenever(remoteDataSource.fetchCharacters(any()))
             .thenReturn(dataWrapperResponseFactory.create())
@@ -72,4 +72,26 @@ class CharactersPagingSourceTest{
         )
     }
 
+    @Test
+    fun `should return a error load result when load is called`() = runBlockingTest {
+        // arrange
+        val exception = RuntimeException()
+        whenever(remoteDataSource.fetchCharacters(any()))
+            .thenThrow(exception)
+
+        // act
+        val result = charactersPagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 2,
+                placeholdersEnabled = false
+            )
+        )
+
+        // assert
+        assertEquals(
+            PagingSource.LoadResult.Error<Int, Character>(exception),
+            result
+        )
+    }
 }
