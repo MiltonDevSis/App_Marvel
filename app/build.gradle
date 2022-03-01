@@ -17,6 +17,15 @@ android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
+    signingConfigs {
+        release {
+            storeFile file('E:\\AndroidProjects\\App_Marvel\\store\\marvel_app_key_store.jks')
+            storePassword 'qwe123'
+            keyAlias 'marvel-app'
+            keyPassword 'qwe123'
+        }
+    }
+
     defaultConfig {
         applicationId "com.mpfcoding.app_marvel"
         minSdkVersion 23
@@ -44,6 +53,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'proguard-rules-homolog.pro'
         }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true   // opção para ofuscar o codigo
             shrinkResources true // opção para reduzir o código
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
