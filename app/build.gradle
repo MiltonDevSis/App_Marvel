@@ -32,8 +32,20 @@ android {
     }
 
     buildTypes {
+        // não usar minitfy em debug, pois o tempo de build ficará mais lento.
+        debug{
+            applicationIdSuffix '.debug'
+            debuggable true
+        }
+        homolog{
+            initWith debug    // copia todos os atribultos do debug, e sobreescreve o applicationIdSuffix
+            minifyEnabled true
+            applicationIdSuffix '.homolog'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro', 'proguard-rules-homolog.pro'
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true   // opção para ofuscar o codigo
+            shrinkResources true // opção para reduzir o código
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
