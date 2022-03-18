@@ -1,7 +1,7 @@
 package com.mpfcoding.app_marvel.presentation.characters
 
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.mpfcoding.app_marvel.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -18,7 +18,7 @@ class CharactersFragmentTest{
 
     @Before
     fun setup(){
-        launchFragmentInContainer<CharactersFragment>()
+        launchFragmentInHiltContainer<CharactersFragment>()
     }
 
     @Test
