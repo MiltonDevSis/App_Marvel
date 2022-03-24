@@ -1,6 +1,5 @@
 package com.mpfcoding.app_marvel.di
 
-import com.mpfcoding.app_marvel.BuildConfig
 import com.mpfcoding.app_marvel.framework.di.qualifier.BaseUrl
 import dagger.Module
 import dagger.Provides
@@ -13,5 +12,5 @@ object BaseUrlTestModule {
 
     @BaseUrl
     @Provides
-    fun provideBaseUrl(): String = "http://localhost/8080/"
+    fun provideBaseUrl(): String = "http://localhost:8080/"
 }
