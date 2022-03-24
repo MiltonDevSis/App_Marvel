@@ -2,6 +2,7 @@ package com.mpfcoding.app_marvel.framework.di
 
 import com.mpfcoding.app_marvel.BuildConfig
 import com.mpfcoding.app_marvel.MarvelApp
+import com.mpfcoding.app_marvel.framework.di.qualifier.BaseUrl
 import com.mpfcoding.app_marvel.framework.network.MarvelApi
 import com.mpfcoding.app_marvel.framework.network.interceptor.AuthorizationInterceptor
 import dagger.Module
@@ -62,10 +63,11 @@ object NetworkModel {
     @Provides
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        converterFactory: GsonConverterFactory
+        converterFactory: GsonConverterFactory,
+        @BaseUrl baseUrl: String
     ): MarvelApi {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(converterFactory)
             .build()
