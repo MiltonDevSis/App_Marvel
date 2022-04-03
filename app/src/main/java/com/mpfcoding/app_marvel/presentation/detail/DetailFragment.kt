@@ -9,7 +9,7 @@ import com.mpfcoding.app_marvel.databinding.FragmentDetailBinding
 class DetailFragment : Fragment() {
 
     private var _binding: FragmentDetailBinding? = null
-    private val binding: FragmentDetailBinding get() = _binding!!
+    //private val binding: FragmentDetailBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
