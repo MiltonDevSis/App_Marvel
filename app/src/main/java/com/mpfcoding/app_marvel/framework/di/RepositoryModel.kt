@@ -2,7 +2,6 @@ package com.mpfcoding.app_marvel.framework.di
 
 import com.mpfcoding.app_marvel.framework.CharactersRepositoryImpl
 import com.mpfcoding.app_marvel.framework.remote.RetrofitCharactersDataSource
-import com.mpfcoding.app_marvel.framework.network.response.DataWrapperResponse
 import com.mpfcoding.core.data.repository.CharactersRemoteDataSource
 import com.mpfcoding.core.data.repository.CharactersRepository
 import dagger.Binds
@@ -18,5 +17,5 @@ interface RepositoryModel {
     fun bindCharactersRepository(repository: CharactersRepositoryImpl): CharactersRepository
 
     @Binds
-    fun bindRemoteDataSource(datasource: RetrofitCharactersDataSource): CharactersRemoteDataSource<DataWrapperResponse>
+    fun bindRemoteDataSource(datasource: RetrofitCharactersDataSource): CharactersRemoteDataSource
 }
