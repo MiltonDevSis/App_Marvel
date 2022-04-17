@@ -1,4 +1,4 @@
-package com.mpfcoding.app_marvel.framework.network.remote
+package com.mpfcoding.app_marvel.framework.remote
 
 import com.mpfcoding.app_marvel.framework.network.MarvelApi
 import com.mpfcoding.app_marvel.framework.network.response.DataWrapperResponse

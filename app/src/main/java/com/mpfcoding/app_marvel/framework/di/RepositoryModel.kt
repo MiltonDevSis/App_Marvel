@@ -1,7 +1,7 @@
 package com.mpfcoding.app_marvel.framework.di
 
 import com.mpfcoding.app_marvel.framework.CharactersRepositoryImpl
-import com.mpfcoding.app_marvel.framework.network.remote.RetrofitCharactersDataSource
+import com.mpfcoding.app_marvel.framework.remote.RetrofitCharactersDataSource
 import com.mpfcoding.app_marvel.framework.network.response.DataWrapperResponse
 import com.mpfcoding.core.data.repository.CharactersRemoteDataSource
 import com.mpfcoding.core.data.repository.CharactersRepository

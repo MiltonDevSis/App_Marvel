@@ -1,4 +1,4 @@
-package com.mpfcoding.app_marvel.framework.network.paging
+package com.mpfcoding.app_marvel.framework.paging
 
 import androidx.paging.PagingSource
 import com.mpfcoding.app_marvel.framework.network.response.DataWrapperResponse

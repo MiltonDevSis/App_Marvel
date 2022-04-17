@@ -1,7 +1,7 @@
 package com.mpfcoding.app_marvel.framework
 
 import androidx.paging.PagingSource
-import com.mpfcoding.app_marvel.framework.network.paging.CharactersPagingSource
+import com.mpfcoding.app_marvel.framework.paging.CharactersPagingSource
 import com.mpfcoding.app_marvel.framework.network.response.DataWrapperResponse
 import com.mpfcoding.core.data.repository.CharactersRemoteDataSource
 import com.mpfcoding.core.data.repository.CharactersRepository
