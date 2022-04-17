@@ -13,11 +13,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
-import com.mpfcoding.app_marvel.R
 import com.mpfcoding.app_marvel.databinding.FragmentCharactersBinding
 import com.mpfcoding.app_marvel.presentation.detail.DetailViewArgs
-import com.mpfcoding.core.domain.model.Character
-import com.mpfcoding.core.usecase.base.ResultStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -71,6 +68,7 @@ class CharactersFragment : Fragment() {
                     character.name,
                     DetailViewArgs(character.name, character.imageUrl)
                 )
+
             findNavController().navigate(directions, extras)
         }
 

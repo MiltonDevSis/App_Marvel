@@ -19,6 +19,7 @@ class CharactersViewHolder(
 
     fun bind(character: Character) {
         textName.text = character.name
+        imageCharacter.transitionName = character.name
 
         Glide.with(itemView)
             .load(character.imageUrl)
