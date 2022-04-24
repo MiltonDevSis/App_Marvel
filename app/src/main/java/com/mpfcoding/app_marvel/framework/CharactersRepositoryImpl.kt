@@ -5,6 +5,7 @@ import com.mpfcoding.app_marvel.framework.paging.CharactersPagingSource
 import com.mpfcoding.core.data.repository.CharactersRemoteDataSource
 import com.mpfcoding.core.data.repository.CharactersRepository
 import com.mpfcoding.core.domain.model.Character
+import com.mpfcoding.core.domain.model.Comic
 import javax.inject.Inject
 
 class CharactersRepositoryImpl
@@ -14,5 +15,9 @@ class CharactersRepositoryImpl
 
     override fun getCharacters(query: String): PagingSource<Int, Character> {
         return CharactersPagingSource(remoteDataSource, query)
+    }
+
+    override suspend fun getComics(characterId: Int): List<Comic> {
+        return remoteDataSource.fetchComics(characterId)
     }
 }
