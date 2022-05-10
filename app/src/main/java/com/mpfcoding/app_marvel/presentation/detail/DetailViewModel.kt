@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mpfcoding.app_marvel.R
 import com.mpfcoding.core.domain.model.Comic
 import com.mpfcoding.core.usecase.GetComicsUseCase
 import com.mpfcoding.core.usecase.base.ResultStatus
@@ -42,7 +43,18 @@ class DetailViewModel @Inject constructor(
         collect { status ->
             _uiState.value = when (status) {
                 ResultStatus.Loading -> UiState.Loading
-                is ResultStatus.Success -> UiState.Sucess(status.data)
+                is ResultStatus.Success -> {
+                    val detailChildList = status.data.map { DetailChildVE(it.id, it.imageUrl) }
+
+                    val detailParentList = listOf(
+                        DetailParentVE(
+                            R.string.details_comics_category,
+                            detailChildList
+                        )
+                    )
+
+                    UiState.Sucess(detailParentList)
+                }
                 is ResultStatus.Error -> UiState.Error
             }
         }
@@ -50,7 +62,7 @@ class DetailViewModel @Inject constructor(
 
     sealed class UiState {
         object Loading : UiState()
-        data class Sucess(val comics: List<Comic>) : UiState()
+        data class Sucess(val detailParentList: List<DetailParentVE>) : UiState()
         object Error : UiState()
     }
 }

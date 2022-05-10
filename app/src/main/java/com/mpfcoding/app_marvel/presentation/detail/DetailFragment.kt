@@ -9,11 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
-import com.bumptech.glide.Glide
 import com.mpfcoding.app_marvel.R
 import com.mpfcoding.app_marvel.databinding.FragmentDetailBinding
 import com.mpfcoding.app_marvel.framework.imageloader.ImageLoader
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -52,13 +50,17 @@ class DetailFragment : Fragment() {
         setSharedElementTransitionOnEnter()
 
         viewModel.uiState.observe(viewLifecycleOwner){ uiState ->
-            val logResult = when(uiState){
-                DetailViewModel.UiState.Loading -> "Loading comic ..."
-                is DetailViewModel.UiState.Sucess -> uiState.comics.toString()
-                DetailViewModel.UiState.Error -> "Error when loading comic"
-            }
+            when(uiState){
+                DetailViewModel.UiState.Loading -> {
 
-            Log.d(DetailFragment::class.simpleName, logResult)
+                }
+                is DetailViewModel.UiState.Sucess -> {
+
+                }
+                DetailViewModel.UiState.Error -> {
+
+                }
+            }
         }
 
         viewModel.getComics(detailViewArgs.characterId)
