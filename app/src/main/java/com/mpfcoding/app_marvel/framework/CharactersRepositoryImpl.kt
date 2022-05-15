@@ -6,6 +6,7 @@ import com.mpfcoding.core.data.repository.CharactersRemoteDataSource
 import com.mpfcoding.core.data.repository.CharactersRepository
 import com.mpfcoding.core.domain.model.Character
 import com.mpfcoding.core.domain.model.Comic
+import com.mpfcoding.core.domain.model.Event
 import javax.inject.Inject
 
 class CharactersRepositoryImpl
@@ -19,5 +20,9 @@ class CharactersRepositoryImpl
 
     override suspend fun getComics(characterId: Int): List<Comic> {
         return remoteDataSource.fetchComics(characterId)
+    }
+
+    override suspend fun getEvents(characterId: Int): List<Event> {
+        return remoteDataSource.fetchEvents(characterId)
     }
 }

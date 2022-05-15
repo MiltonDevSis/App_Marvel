@@ -1,17 +1,17 @@
 package com.mpfcoding.app_marvel.framework.network.response
 
 import com.google.gson.annotations.SerializedName
-import com.mpfcoding.core.domain.model.Comic
+import com.mpfcoding.core.domain.model.Event
 
-data class ComicResponse(
+data class EventResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("thumbnail")
     val thumbnail: ThumbnailResponse
 )
 
-fun ComicResponse.toComicModel(): Comic {
-    return Comic(
+fun EventResponse.toEventModel(): Event {
+    return Event(
         id = this.id,
         imageUrl = this.thumbnail.getHttpsUrl()
     )
