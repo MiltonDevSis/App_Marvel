@@ -45,17 +45,18 @@ class DetailFragment : Fragment() {
 
         binding.imageCharacter.run {
             transitionName = detailViewArgs.name
-            imageLoader.load(this, detailViewArgs.imageUrl, R.drawable.ic_img_loading_error)
+            imageLoader.load(this, detailViewArgs.imageUrl)
         }
         setSharedElementTransitionOnEnter()
 
-        viewModel.uiState.observe(viewLifecycleOwner){ uiState ->
-            when(uiState){
+        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
+            when (uiState) {
                 DetailViewModel.UiState.Loading -> {
 
                 }
-                is DetailViewModel.UiState.Sucess -> {
-
+                is DetailViewModel.UiState.Sucess -> binding.recyclerParentDetail.run {
+                     setHasFixedSize(true)
+                    adapter = DetailParentAdapter(uiState.detailParentList, imageLoader)
                 }
                 DetailViewModel.UiState.Error -> {
 
