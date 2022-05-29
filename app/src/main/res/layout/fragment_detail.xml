@@ -41,6 +41,7 @@
             tools:itemCount="2"/>
 
         <include
+            android:id="@+id/include_error_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/include_error_view" />

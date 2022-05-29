@@ -23,63 +23,66 @@ class DetailViewModel @Inject constructor(
     private val _uiState = MutableLiveData<UiState>()
     val uiState: LiveData<UiState> get() = _uiState
 
-    fun getComics(characterId: Int) = viewModelScope.launch {
+    fun getCharacterCategory(characterId: Int) = viewModelScope.launch {
         getCharacterCategoriesUseCase(GetCharacterCategoriesUseCase.GetComicsParams(characterId))
             .watchStatus()
         /**
          * Caso não queira fazer a extention function somente usar direto o collect.
          *
          *  .collect { status ->
-                when (status) {
-                    ResultStatus.Loading -> UiState.Loading
-                    is ResultStatus.Success -> UiState.Sucess(status.data)
-                    is ResultStatus.Error -> UiState.Error
-                }
-            }
+        when (status) {
+        ResultStatus.Loading -> UiState.Loading
+        is ResultStatus.Success -> UiState.Sucess(status.data)
+        is ResultStatus.Error -> UiState.Error
+        }
+        }
          **/
 
     }
 
     private fun Flow<ResultStatus<Pair<List<Comic>, List<Event>>>>.watchStatus() =
         viewModelScope.launch {
-        collect { status ->
-            _uiState.value = when (status) {
-                ResultStatus.Loading -> UiState.Loading
-                is ResultStatus.Success -> {
-                    val detailParentList = mutableListOf<DetailParentVE>()
+            collect { status ->
+                _uiState.value = when (status) {
+                    ResultStatus.Loading -> UiState.Loading
+                    is ResultStatus.Success -> {
+                        val detailParentList = mutableListOf<DetailParentVE>()
 
-                    val comics = status.data.first
-                    if (comics.isNotEmpty()){
-                        comics.map {
-                            DetailChildVE(it.id, it.imageUrl)
-                        }.also {
-                            detailParentList.add(
-                                DetailParentVE(R.string.details_comics_category, it)
-                            )
+                        val comics = status.data.first
+                        if (comics.isNotEmpty()) {
+                            comics.map {
+                                DetailChildVE(it.id, it.imageUrl)
+                            }.also {
+                                detailParentList.add(
+                                    DetailParentVE(R.string.details_comics_category, it)
+                                )
+                            }
                         }
-                    }
 
-                    val events = status.data.second
-                    if (events.isNotEmpty()){
-                        events.map {
-                            DetailChildVE(it.id, it.imageUrl)
-                        }.also {
-                            detailParentList.add(
-                                DetailParentVE(R.string.details_events_category, it)
-                            )
+                        val events = status.data.second
+                        if (events.isNotEmpty()) {
+                            events.map {
+                                DetailChildVE(it.id, it.imageUrl)
+                            }.also {
+                                detailParentList.add(
+                                    DetailParentVE(R.string.details_events_category, it)
+                                )
+                            }
                         }
-                    }
 
-                    UiState.Sucess(detailParentList)
+                        if (detailParentList.isNotEmpty()) {
+                            UiState.Sucess(detailParentList)
+                        } else UiState.Empty
+                    }
+                    is ResultStatus.Error -> UiState.Error
                 }
-                is ResultStatus.Error -> UiState.Error
             }
         }
-    }
 
     sealed class UiState {
         object Loading : UiState()
         data class Sucess(val detailParentList: List<DetailParentVE>) : UiState()
         object Error : UiState()
+        object Empty : UiState()
     }
 }
