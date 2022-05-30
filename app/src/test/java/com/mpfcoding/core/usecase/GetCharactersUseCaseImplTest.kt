@@ -1,12 +1,10 @@
 package com.mpfcoding.core.usecase
 
 import androidx.paging.PagingConfig
-import androidx.paging.PagingSource
 import com.mpfcoding.core.data.repository.CharactersRepository
 import com.mpfcoding.testing.MainCoroutineRule
 import com.mpfcoding.testing.model.CharacterFactory
 import com.mpfcoding.testing.pagingsource.PagingSourceFactory
-import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,10 +18,10 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class GetCharactersUseCaseImplTest{
 
-    @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 

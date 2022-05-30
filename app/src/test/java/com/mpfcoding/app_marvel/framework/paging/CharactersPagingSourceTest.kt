@@ -1,10 +1,9 @@
 package com.mpfcoding.app_marvel.framework.paging
 
 import androidx.paging.PagingSource
-import com.mpfcoding.app_marvel.framework.network.response.DataWrapperResponse
 import com.mpfcoding.core.data.repository.CharactersRemoteDataSource
 import com.mpfcoding.core.domain.model.Character
-import com.mpfcoding.factory.response.DataWrapperResponseFactory
+import com.mpfcoding.factory.response.CharacterPagingFactory
 import com.mpfcoding.testing.MainCoroutineRule
 import com.mpfcoding.testing.model.CharacterFactory
 import com.nhaarman.mockitokotlin2.any
@@ -19,17 +18,17 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class CharactersPagingSourceTest {
 
-    @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
     @Mock
-    lateinit var remoteDataSource: CharactersRemoteDataSource<DataWrapperResponse>
+    lateinit var remoteDataSource: CharactersRemoteDataSource
 
-    private val dataWrapperResponseFactory = DataWrapperResponseFactory()
+    private val dataWrapperResponseFactory = CharacterPagingFactory()
 
     private val characterFactory = CharacterFactory()
 
@@ -40,7 +39,6 @@ class CharactersPagingSourceTest {
         charactersPagingSource = CharactersPagingSource(remoteDataSource, "")
     }
 
-    @ExperimentalCoroutinesApi
     @Test
     fun `should return a sucess load result when load is called`() = runBlockingTest {
         //arrange
