@@ -4,6 +4,7 @@ import com.mpfcoding.core.data.repository.CharactersRepository
 import com.mpfcoding.core.domain.model.Comic
 import com.mpfcoding.core.domain.model.Event
 import com.mpfcoding.core.usecase.base.AppCoroutinesDispatchers
+import com.mpfcoding.core.usecase.base.CoroutinesDispatchers
 import com.mpfcoding.core.usecase.base.ResultStatus
 import com.mpfcoding.core.usecase.base.UseCase
 import kotlinx.coroutines.async
@@ -19,15 +20,15 @@ interface GetCharacterCategoriesUseCase {
 }
 
 class GetCharacterCategoriesUseCaseImpl @Inject constructor(
-    val repository: CharactersRepository,
-    private val dispatchers: AppCoroutinesDispatchers
+    private val repository: CharactersRepository,
+    private val dispatchers: CoroutinesDispatchers
 ) : GetCharacterCategoriesUseCase,
     UseCase<GetCharacterCategoriesUseCase.GetComicsParams, Pair<List<Comic>, List<Event>>>() {
 
     override suspend fun doWork(
         params: GetCharacterCategoriesUseCase.GetComicsParams
     ): ResultStatus<Pair<List<Comic>, List<Event>>> {
-        return withContext(dispatchers.io) {
+        return withContext(dispatchers.io()) {
             val comicsDeferred = async { repository.getComics(params.characterId) }
             val eventsDeferred = async { repository.getEvents(params.characterId) }
 

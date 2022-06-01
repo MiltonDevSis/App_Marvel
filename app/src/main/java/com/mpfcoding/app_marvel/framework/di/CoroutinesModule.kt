@@ -1,6 +1,8 @@
 package com.mpfcoding.app_marvel.framework.di
 
 import com.mpfcoding.core.usecase.base.AppCoroutinesDispatchers
+import com.mpfcoding.core.usecase.base.CoroutinesDispatchers
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,12 +11,9 @@ import kotlinx.coroutines.Dispatchers
 
 @Module
 @InstallIn(SingletonComponent::class)
-object CoroutinesModule {
+interface CoroutinesModule {
 
+    @Binds
     @Provides
-    fun provideDispatcherProvider() = AppCoroutinesDispatchers(
-        Dispatchers.IO,
-        Dispatchers.Default,
-        Dispatchers.Main
-    )
+    fun bindDispatcherProvider(dispatchers: AppCoroutinesDispatchers): CoroutinesDispatchers
 }
