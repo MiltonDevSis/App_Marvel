@@ -24,7 +24,8 @@ class DetailViewModel @Inject constructor(
     val uiState: LiveData<UiState> get() = _uiState
 
     fun getCharacterCategory(characterId: Int) = viewModelScope.launch {
-        getCharacterCategoriesUseCase(GetCharacterCategoriesUseCase.GetComicsParams(characterId))
+        getCharacterCategoriesUseCase
+            .invoke(GetCharacterCategoriesUseCase.GetComicsParams(characterId))
             .watchStatus()
         /**
          * Caso não queira fazer a extention function somente usar direto o collect.

@@ -14,6 +14,5 @@ import kotlinx.coroutines.Dispatchers
 interface CoroutinesModule {
 
     @Binds
-    @Provides
     fun bindDispatcherProvider(dispatchers: AppCoroutinesDispatchers): CoroutinesDispatchers
 }

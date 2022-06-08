@@ -2,21 +2,31 @@ package com.mpfcoding.app_marvel.presentation.detail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.mpfcoding.app_marvel.R
 import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
+import com.mpfcoding.core.usecase.base.ResultStatus
 import com.mpfcoding.testing.MainCoroutineRule
 import com.mpfcoding.testing.model.CharacterFactory
 import com.mpfcoding.testing.model.ComicFactory
 import com.mpfcoding.testing.model.EventFactory
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.isA
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class DetailViewModelTest{
+class DetailViewModelTest {
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -41,5 +51,54 @@ class DetailViewModelTest{
         detailViewModel = DetailViewModel(getCharactersCategoriesUseCase)
         detailViewModel.uiState.observeForever(uiStateObserver)
     }
+
+    @Test
+    fun `should notify uiState with Success from UiState when get character categories returns success`() =
+        runTest {
+            // Arrange
+            whenever(getCharactersCategoriesUseCase.invoke(any()))
+                .thenReturn(
+                    flowOf(ResultStatus.Success(comics to events))
+                )
+
+            // Act
+            detailViewModel.getCharacterCategory(character.id)
+            // Assert
+            verify(uiStateObserver).onChanged(isA<DetailViewModel.UiState.Sucess>())
+
+            val uiStateSucess = detailViewModel.uiState.value as DetailViewModel.UiState.Sucess
+            val categoriesParentList = uiStateSucess.detailParentList
+
+            Assert.assertEquals(2, categoriesParentList.size)
+            Assert.assertEquals(
+                R.string.details_comics_category,
+                categoriesParentList[0].categoryStringResId
+            )
+            Assert.assertEquals(
+                R.string.details_events_category,
+                categoriesParentList[1].categoryStringResId
+            )
+        }
+
+    @Test
+    fun `should notify uiState with Success from UiState when get character categories returns only comics`() {
+
+    }
+
+    @Test
+    fun `should notify uiState with Success from UiState when get character categories returns only events`() {
+
+    }
+
+    @Test
+    fun `should notify uiState with Empty from UiState when get character categories returns an empty result list`() {
+
+    }
+
+    @Test
+    fun `should notify uiState with Error from UiState when get character categories returns an exception`() {
+
+    }
+
 
 }
