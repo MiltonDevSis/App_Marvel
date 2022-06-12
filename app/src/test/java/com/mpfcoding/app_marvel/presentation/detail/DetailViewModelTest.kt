@@ -81,9 +81,28 @@ class DetailViewModelTest {
         }
 
     @Test
-    fun `should notify uiState with Success from UiState when get character categories returns only comics`() {
+    fun `should notify uiState with Success from UiState when get character categories returns only comics`() =
+        runTest {
+            // Arrange
+            whenever(getCharactersCategoriesUseCase.invoke(any()))
+                .thenReturn(
+                    flowOf(ResultStatus.Success(comics to emptyList()))
+                )
 
-    }
+            // Act
+            detailViewModel.getCharacterCategory(character.id)
+            // Assert
+            verify(uiStateObserver).onChanged(isA<DetailViewModel.UiState.Sucess>())
+
+            val uiStateSucess = detailViewModel.uiState.value as DetailViewModel.UiState.Sucess
+            val categoriesParentList = uiStateSucess.detailParentList
+
+            Assert.assertEquals(1, categoriesParentList.size)
+            Assert.assertEquals(
+                R.string.details_comics_category,
+                categoriesParentList[0].categoryStringResId
+            )
+        }
 
     @Test
     fun `should notify uiState with Success from UiState when get character categories returns only events`() {
