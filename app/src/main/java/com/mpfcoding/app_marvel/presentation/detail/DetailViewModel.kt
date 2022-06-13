@@ -11,7 +11,6 @@ import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
 import com.mpfcoding.core.usecase.base.ResultStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +24,7 @@ class DetailViewModel @Inject constructor(
 
     fun getCharacterCategory(characterId: Int) = viewModelScope.launch {
         getCharacterCategoriesUseCase
-            .invoke(GetCharacterCategoriesUseCase.GetComicsParams(characterId))
+            .invoke(GetCharacterCategoriesUseCase.GetCategoriesParams(characterId))
             .watchStatus()
         /**
          * Caso não queira fazer a extention function somente usar direto o collect.
