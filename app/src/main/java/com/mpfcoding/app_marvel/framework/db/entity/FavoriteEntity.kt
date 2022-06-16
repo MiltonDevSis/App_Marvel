@@ -7,6 +7,7 @@ import com.mpfcoding.core.data.DbConstants.FAVORITES_COLUMN_INFO_ID
 import com.mpfcoding.core.data.DbConstants.FAVORITES_COLUMN_INFO_IMAGE_URL
 import com.mpfcoding.core.data.DbConstants.FAVORITES_COLUMN_INFO_NAME
 import com.mpfcoding.core.data.DbConstants.FAVORITES_TABLE_NAME
+import com.mpfcoding.core.domain.model.Character
 
 /**
  * ColumnInfo serve para caso o proguard ofusque o codigo ainda funcione
@@ -22,3 +23,7 @@ data class FavoriteEntity(
     @ColumnInfo(name = FAVORITES_COLUMN_INFO_IMAGE_URL)
     val imageUrl: String
 )
+
+fun List<FavoriteEntity>.toCharacterModel() = map {
+    Character(it.id, it.name, it.imageUrl)
+}

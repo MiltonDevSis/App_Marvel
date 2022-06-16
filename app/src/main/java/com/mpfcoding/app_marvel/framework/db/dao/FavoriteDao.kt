@@ -1,6 +1,10 @@
 package com.mpfcoding.app_marvel.framework.db.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Delete
 import com.mpfcoding.app_marvel.framework.db.entity.FavoriteEntity
 import com.mpfcoding.core.data.DbConstants.FAVORITES_TABLE_NAME
 import kotlinx.coroutines.flow.Flow
