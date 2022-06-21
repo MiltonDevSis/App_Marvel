@@ -1,9 +1,11 @@
 package com.mpfcoding.app_marvel.framework.di
 
-import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
-import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCaseImpl
 import com.mpfcoding.core.usecase.GetCharactersUseCase
 import com.mpfcoding.core.usecase.GetCharactersUseCaseImpl
+import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
+import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCaseImpl
+import com.mpfcoding.core.usecase.AddFavoriteUseCase
+import com.mpfcoding.core.usecase.AddFavoriteUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -23,4 +25,7 @@ interface UseCaseModule {
     fun bindGetComicsUseCase(
         useCase: GetCharacterCategoriesUseCaseImpl
     ): GetCharacterCategoriesUseCase
+
+    @Binds
+    fun bindAddFavoriteUseCase(useCase: AddFavoriteUseCaseImpl): AddFavoriteUseCase
 }
