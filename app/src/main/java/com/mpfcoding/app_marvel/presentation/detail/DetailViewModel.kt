@@ -9,6 +9,7 @@ import com.mpfcoding.app_marvel.R
 import com.mpfcoding.app_marvel.presentation.extension.watchStatus
 import com.mpfcoding.core.usecase.AddFavoriteUseCase
 import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
+import com.mpfcoding.core.usecase.base.CoroutinesDispatchers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,8 +17,19 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getCharacterCategoriesUseCase: GetCharacterCategoriesUseCase,
-    private val addFavoriteUseCase: AddFavoriteUseCase
+    private val addFavoriteUseCase: AddFavoriteUseCase,
+    coroutinesDispatchers: CoroutinesDispatchers
 ) : ViewModel() {
+
+    val categories = UiActionStateLiveData(
+        coroutinesDispatchers.main(),
+        getCharacterCategoriesUseCase
+    )
+
+    val favorites = FavoriteUiStateLiveData(
+        coroutinesDispatchers.main(),
+        addFavoriteUseCase
+    )
 
     private val _uiState = MutableLiveData<UiState>()
     val uiState: LiveData<UiState> get() = _uiState

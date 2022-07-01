@@ -7,6 +7,7 @@ import androidx.lifecycle.switchMap
 import com.mpfcoding.app_marvel.R
 import com.mpfcoding.app_marvel.presentation.extension.watchStatus
 import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
+import com.mpfcoding.core.usecase.base.CoroutinesDispatchers
 import kotlin.coroutines.CoroutineContext
 
 class UiActionStateLiveData(
