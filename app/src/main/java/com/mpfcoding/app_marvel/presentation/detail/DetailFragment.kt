@@ -71,7 +71,7 @@ class DetailFragment : Fragment() {
                 }
                 UiActionStateLiveData.UiState.Error -> {
                     binding.includeErrorView.buttonRetry.setOnClickListener {
-                        viewModel.getCharacterCategory(detailViewArgs.characterId)
+                        viewModel.categories.load(detailViewArgs.characterId)
                     }
 
                     FLIPPER_CHILD_POSITION_ERROR
