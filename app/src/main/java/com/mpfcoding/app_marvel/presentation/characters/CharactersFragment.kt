@@ -1,15 +1,13 @@
 package com.mpfcoding.app_marvel.presentation.characters
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -17,7 +15,6 @@ import com.mpfcoding.app_marvel.databinding.FragmentCharactersBinding
 import com.mpfcoding.app_marvel.framework.imageloader.ImageLoader
 import com.mpfcoding.app_marvel.presentation.detail.DetailViewArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,7 +30,25 @@ class CharactersFragment : Fragment() {
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    private lateinit var charactersAdapter : CharactersAdapter
+    private val charactersAdapter: CharactersAdapter by lazy {
+        CharactersAdapter(imageLoader) { character, view ->
+            val extras = FragmentNavigatorExtras(
+                view to character.name
+            )
+
+            val directions = CharactersFragmentDirections
+                .actionCharactersFragmentToDetailFragment(
+                    character.name,
+                    DetailViewArgs(
+                        characterId = character.id,
+                        name = character.name,
+                        imageUrl = character.imageUrl
+                    )
+                )
+
+            findNavController().navigate(directions, extras)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,38 +66,21 @@ class CharactersFragment : Fragment() {
         initCharactersAdapter()
         observeInitialLoadState()
 
-        lifecycleScope.launch {
-
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.charactersPagingData("").collect { pagingData ->
-                    charactersAdapter.submitData(pagingData)
+        viewModel.state.observe(viewLifecycleOwner) { uiState ->
+            when (uiState) {
+                is CharactersViewModel.UiState.SearchResult -> {
+                    lifecycleScope.launch {
+                        charactersAdapter.submitData(viewLifecycleOwner.lifecycle, uiState.data)
+                    }
                 }
             }
         }
+
+        viewModel.searchCharacter()
     }
 
     private fun initCharactersAdapter() {
-
-        charactersAdapter = CharactersAdapter(imageLoader) { character, view ->
-            val extras = FragmentNavigatorExtras(
-                view to character.name
-            )
-
-            val directions = CharactersFragmentDirections
-                .actionCharactersFragmentToDetailFragment(
-                    character.name,
-                    DetailViewArgs(
-                        characterId = character.id,
-                        name = character.name,
-                        imageUrl = character.imageUrl
-                    )
-                )
-
-            findNavController().navigate(directions, extras)
-        }
-
         with(binding.recyclerCharacter) {
-            scrollToPosition(0)// pode ser usado binding.recyclerView.run{ }
             setHasFixedSize(true)
             adapter = charactersAdapter.withLoadStateFooter(
                 footer = CharactersLoadStateAdapter(
@@ -132,7 +130,7 @@ class CharactersFragment : Fragment() {
         _binding = null
     }
 
-    companion object{
+    companion object {
         private const val FLIPPER_CHILD_LOADING = 0
         private const val FLIPPER_CHILD_CHARACTERS = 1
         private const val FLIPPER_CHILD_ERROR = 2
