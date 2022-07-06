@@ -15,6 +15,9 @@ interface FavoriteDao {
     @Query("SELECT * FROM $FAVORITES_TABLE_NAME")
     fun loadFavorites(): Flow<List<FavoriteEntity>>
 
+    @Query("SELECT * FROM $FAVORITES_TABLE_NAME WHERE id = :characterId")
+    fun hasFavorite(characterId: Int): FavoriteEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavorite(favoriteEntity: FavoriteEntity)
 
