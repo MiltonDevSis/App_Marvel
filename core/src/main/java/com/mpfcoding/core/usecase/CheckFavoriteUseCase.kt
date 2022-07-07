@@ -16,7 +16,7 @@ interface CheckFavoriteUseCase {
     data class Params(val characterId: Int)
 }
 
-class ChackFavoriteUseCaseImpl @Inject constructor(
+class CheckFavoriteUseCaseImpl @Inject constructor(
     private val favoritesRepository: FavoritesRepository,
     private val dispatchers: CoroutinesDispatchers
 ): UseCase<CheckFavoriteUseCase.Params, Boolean>(), CheckFavoriteUseCase {
