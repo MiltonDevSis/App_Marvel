@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.mpfcoding.core.usecase.AddFavoriteUseCase
 import com.mpfcoding.core.usecase.CheckFavoriteUseCase
 import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
+import com.mpfcoding.core.usecase.RemoveFavoriteUseCase
 import com.mpfcoding.core.usecase.base.CoroutinesDispatchers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -13,6 +14,7 @@ class DetailViewModel @Inject constructor(
     getCharacterCategoriesUseCase: GetCharacterCategoriesUseCase,
     checkFavoriteUseCase: CheckFavoriteUseCase,
     addFavoriteUseCase: AddFavoriteUseCase,
+    removeFavoriteUseCase: RemoveFavoriteUseCase,
     coroutinesDispatchers: CoroutinesDispatchers
 ) : ViewModel() {
 
@@ -24,6 +26,7 @@ class DetailViewModel @Inject constructor(
     val favorites = FavoriteUiStateLiveData(
         coroutinesDispatchers.main(),
         checkFavoriteUseCase,
-        addFavoriteUseCase
+        addFavoriteUseCase,
+        removeFavoriteUseCase
     )
 }

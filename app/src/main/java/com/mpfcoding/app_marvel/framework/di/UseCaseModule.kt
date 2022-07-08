@@ -8,6 +8,8 @@ import com.mpfcoding.core.usecase.AddFavoriteUseCase
 import com.mpfcoding.core.usecase.AddFavoriteUseCaseImpl
 import com.mpfcoding.core.usecase.CheckFavoriteUseCase
 import com.mpfcoding.core.usecase.CheckFavoriteUseCaseImpl
+import com.mpfcoding.core.usecase.RemoveFavoriteUseCase
+import com.mpfcoding.core.usecase.RemoveFavoriteUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,4 +35,8 @@ interface UseCaseModule {
 
     @Binds
     fun bindAddFavoriteUseCase(useCase: AddFavoriteUseCaseImpl): AddFavoriteUseCase
+
+    @Binds
+    fun bindRemoveFavoriteUseCase(useCase: RemoveFavoriteUseCaseImpl): RemoveFavoriteUseCase
 }
+
