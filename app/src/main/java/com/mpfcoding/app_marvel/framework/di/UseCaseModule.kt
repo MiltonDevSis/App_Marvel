@@ -6,6 +6,8 @@ import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
 import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCaseImpl
 import com.mpfcoding.core.usecase.AddFavoriteUseCase
 import com.mpfcoding.core.usecase.AddFavoriteUseCaseImpl
+import com.mpfcoding.core.usecase.CheckFavoriteUseCase
+import com.mpfcoding.core.usecase.CheckFavoriteUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,6 +27,9 @@ interface UseCaseModule {
     fun bindGetComicsUseCase(
         useCase: GetCharacterCategoriesUseCaseImpl
     ): GetCharacterCategoriesUseCase
+
+    @Binds
+    fun bindCheckFavoriteUseCase(useCase: CheckFavoriteUseCaseImpl): CheckFavoriteUseCase
 
     @Binds
     fun bindAddFavoriteUseCase(useCase: AddFavoriteUseCaseImpl): AddFavoriteUseCase

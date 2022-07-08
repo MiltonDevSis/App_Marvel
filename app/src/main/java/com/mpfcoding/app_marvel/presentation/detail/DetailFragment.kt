@@ -82,20 +82,25 @@ class DetailFragment : Fragment() {
     }
 
     private fun setAndObserveFavoriteUiState(detailViewArgs: DetailViewArgs){
-        binding.imageFavoriteIcon.setOnClickListener {
-           viewModel.favorites.update(detailViewArgs)
-        }
+        viewModel.favorites.run {
 
-        viewModel.favorites.state.observe(viewLifecycleOwner){ uiState ->
-            binding.flipperFavorite.displayedChild = when(uiState){
-                FavoriteUiStateLiveData.UiState.Loading -> FLIPPER_FAVORITE_CHILD_POSITION_LOADING
-                is FavoriteUiStateLiveData.UiState.Icon -> {
-                    binding.imageFavoriteIcon.setImageResource(uiState.icon)
-                    FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
-                }
-                is FavoriteUiStateLiveData.UiState.Erro -> {
-                    showShortToast(uiState.messageResId)
-                    FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
+            checkFavorite(detailViewArgs.characterId)
+
+            binding.imageFavoriteIcon.setOnClickListener {
+                update(detailViewArgs)
+            }
+
+            state.observe(viewLifecycleOwner){ uiState ->
+                binding.flipperFavorite.displayedChild = when(uiState){
+                    FavoriteUiStateLiveData.UiState.Loading -> FLIPPER_FAVORITE_CHILD_POSITION_LOADING
+                    is FavoriteUiStateLiveData.UiState.Icon -> {
+                        binding.imageFavoriteIcon.setImageResource(uiState.icon)
+                        FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
+                    }
+                    is FavoriteUiStateLiveData.UiState.Erro -> {
+                        showShortToast(uiState.messageResId)
+                        FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
+                    }
                 }
             }
         }
