@@ -235,4 +235,56 @@ class DetailViewModelTest {
                 detailViewModel.favorites.state.value as FavoriteUiStateLiveData.UiState.Icon
             assertEquals(R.drawable.ic_favorite_unchecked, uiState.icon)
         }
+
+    @Test
+    fun `should notify favorite_uiState with filled favorite icon when current icon is unchecked`() =
+        runTest {
+            // Arrange
+            whenever(addFavoritesUseCase.invoke(any()))
+                .thenReturn(
+                    flowOf(
+                        ResultStatus.Success(Unit)
+                    )
+                )
+
+            // Act
+            detailViewModel.run {
+                favorites.currentFavoriteIcon = R.drawable.ic_favorite_unchecked
+                favorites.update(
+                    DetailViewArgs(character.id, character.name, character.imageUrl)
+                )
+            }
+
+            // Assert
+            verify(favoriteUiStateObserver).onChanged(isA<FavoriteUiStateLiveData.UiState.Icon>())
+            val uiState =
+                detailViewModel.favorites.state.value as FavoriteUiStateLiveData.UiState.Icon
+            assertEquals(R.drawable.ic_favorite_checked, uiState.icon)
+        }
+
+    @Test
+    fun `should call remove and notify favorite_uiState with filled favorite icon when current icon is checked`() =
+        runTest {
+            // Arrange
+            whenever(removeFavoritesUseCase.invoke(any()))
+                .thenReturn(
+                    flowOf(
+                        ResultStatus.Success(Unit)
+                    )
+                )
+
+            // Act
+            detailViewModel.run {
+                favorites.currentFavoriteIcon = R.drawable.ic_favorite_checked
+                favorites.update(
+                    DetailViewArgs(character.id, character.name, character.imageUrl)
+                )
+            }
+
+            // Assert
+            verify(favoriteUiStateObserver).onChanged(isA<FavoriteUiStateLiveData.UiState.Icon>())
+            val uiState =
+                detailViewModel.favorites.state.value as FavoriteUiStateLiveData.UiState.Icon
+            assertEquals(R.drawable.ic_favorite_unchecked, uiState.icon)
+        }
 }
