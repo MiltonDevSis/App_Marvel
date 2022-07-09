@@ -5,7 +5,9 @@ import androidx.lifecycle.Observer
 import com.mpfcoding.app_marvel.R
 import com.mpfcoding.core.domain.model.Comic
 import com.mpfcoding.core.usecase.AddFavoriteUseCase
+import com.mpfcoding.core.usecase.CheckFavoriteUseCase
 import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
+import com.mpfcoding.core.usecase.RemoveFavoriteUseCase
 import com.mpfcoding.core.usecase.base.ResultStatus
 import com.mpfcoding.testing.MainCoroutineRule
 import com.mpfcoding.testing.model.CharacterFactory
@@ -18,7 +20,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -45,7 +47,16 @@ class DetailViewModelTest {
     private lateinit var addFavoritesUseCase: AddFavoriteUseCase
 
     @Mock
+    private lateinit var checkFavoritesUseCase: CheckFavoriteUseCase
+
+    @Mock
+    private lateinit var removeFavoritesUseCase: RemoveFavoriteUseCase
+
+    @Mock
     private lateinit var uiStateObserver: Observer<UiActionStateLiveData.UiState>
+
+    @Mock
+    private lateinit var favoriteUiStateObserver: Observer<FavoriteUiStateLiveData.UiState>
 
     private val character = CharacterFactory().create(CharacterFactory.Hero.TreeDMan)
     private val comics = listOf(ComicFactory().create(ComicFactory.FakeComic.FakeComic1))
@@ -55,10 +66,13 @@ class DetailViewModelTest {
     fun setUp() {
         detailViewModel = DetailViewModel(
             getCharactersCategoriesUseCase,
+            checkFavoritesUseCase,
             addFavoritesUseCase,
+            removeFavoritesUseCase,
             mainCoroutineRule.testDispatcherProvider
         ).apply {
             categories.state.observeForever(uiStateObserver)
+            favorites.state.observeForever(favoriteUiStateObserver)
         }
     }
 
@@ -76,15 +90,16 @@ class DetailViewModelTest {
             // Assert
             verify(uiStateObserver).onChanged(isA<UiActionStateLiveData.UiState.Success>())
 
-            val uiStateSucess = detailViewModel.categories.state.value as UiActionStateLiveData.UiState.Success
+            val uiStateSucess =
+                detailViewModel.categories.state.value as UiActionStateLiveData.UiState.Success
             val categoriesParentList = uiStateSucess.detailParentList
 
-            Assert.assertEquals(2, categoriesParentList.size)
-            Assert.assertEquals(
+            assertEquals(2, categoriesParentList.size)
+            assertEquals(
                 R.string.details_comics_category,
                 categoriesParentList[0].categoryStringResId
             )
-            Assert.assertEquals(
+            assertEquals(
                 R.string.details_events_category,
                 categoriesParentList[1].categoryStringResId
             )
@@ -104,11 +119,12 @@ class DetailViewModelTest {
             // Assert
             verify(uiStateObserver).onChanged(isA<UiActionStateLiveData.UiState.Success>())
 
-            val uiStateSucess = detailViewModel.categories.state.value as UiActionStateLiveData.UiState.Success
+            val uiStateSucess =
+                detailViewModel.categories.state.value as UiActionStateLiveData.UiState.Success
             val categoriesParentList = uiStateSucess.detailParentList
 
-            Assert.assertEquals(1, categoriesParentList.size)
-            Assert.assertEquals(
+            assertEquals(1, categoriesParentList.size)
+            assertEquals(
                 R.string.details_comics_category,
                 categoriesParentList[0].categoryStringResId
             )
@@ -128,11 +144,12 @@ class DetailViewModelTest {
             // Assert
             verify(uiStateObserver).onChanged(isA<UiActionStateLiveData.UiState.Success>())
 
-            val uiStateSucess = detailViewModel.categories.state.value as UiActionStateLiveData.UiState.Success
+            val uiStateSucess =
+                detailViewModel.categories.state.value as UiActionStateLiveData.UiState.Success
             val categoriesParentList = uiStateSucess.detailParentList
 
-            Assert.assertEquals(1, categoriesParentList.size)
-            Assert.assertEquals(
+            assertEquals(1, categoriesParentList.size)
+            assertEquals(
                 R.string.details_events_category,
                 categoriesParentList[0].categoryStringResId
             )
@@ -169,5 +186,53 @@ class DetailViewModelTest {
 
             // Assert
             verify(uiStateObserver).onChanged(isA<UiActionStateLiveData.UiState.Error>())
+        }
+
+    @Test
+    fun `should notify favorite_uiState with filled favorite icon when check favorite returns true`() =
+        runTest {
+            // Arrange
+            whenever(checkFavoritesUseCase.invoke(any()))
+                .thenReturn(
+                    flowOf(
+                        ResultStatus.Success(true)
+                    )
+                )
+
+            // Action
+            detailViewModel.favorites.checkFavorite(character.id)
+
+            // Assert
+            verify(favoriteUiStateObserver).onChanged(
+                isA<FavoriteUiStateLiveData.UiState.Icon>()
+            )
+            val uiState =
+                detailViewModel.favorites.state.value as FavoriteUiStateLiveData.UiState.Icon
+
+            assertEquals(R.drawable.ic_favorite_checked, uiState.icon)
+        }
+
+
+    @Test
+    fun `should notify favorite_uiState with not filled favorite icon when check favorite returns false`() =
+        runTest {
+            // Arrange
+            whenever(checkFavoritesUseCase.invoke(any()))
+                .thenReturn(
+                    flowOf(
+                        ResultStatus.Success(false)
+                    )
+                )
+
+            // Action
+            detailViewModel.favorites.checkFavorite(character.id)
+
+            // Assert
+            verify(favoriteUiStateObserver).onChanged(
+                isA<FavoriteUiStateLiveData.UiState.Icon>()
+            )
+            val uiState =
+                detailViewModel.favorites.state.value as FavoriteUiStateLiveData.UiState.Icon
+            assertEquals(R.drawable.ic_favorite_unchecked, uiState.icon)
         }
 }
