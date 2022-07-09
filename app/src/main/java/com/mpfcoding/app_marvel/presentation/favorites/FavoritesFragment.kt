@@ -1,18 +1,31 @@
 package com.mpfcoding.app_marvel.presentation.favorites
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import com.mpfcoding.app_marvel.R
+import androidx.fragment.app.Fragment
+import com.mpfcoding.app_marvel.databinding.FragmentFavoritesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
+
+    private var _binding: FragmentFavoritesBinding? = null
+    private val binding: FragmentFavoritesBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+    ) = FragmentFavoritesBinding.inflate(
+        inflater,
+        container,
+        false
+    ).apply {
+        _binding = this
+    }.root
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }
