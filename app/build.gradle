@@ -153,4 +153,17 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+
+    def hypirion_version = '0.9.34'
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-core:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-attr:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-build-config:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-crash:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-disk:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-geiger-counter:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-measurement:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-phoenix:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-recorder:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-shared-preferences:$hypirion_version"
+    debugImplementation "com.willowtreeapps.hyperion:hyperion-timber:$hypirion_version"
 }

@@ -1,7 +1,6 @@
 package com.mpfcoding.app_marvel.framework.di
 
 import com.mpfcoding.app_marvel.BuildConfig
-import com.mpfcoding.app_marvel.MarvelApp
 import com.mpfcoding.app_marvel.framework.di.qualifier.BaseUrl
 import com.mpfcoding.app_marvel.framework.network.MarvelApi
 import com.mpfcoding.app_marvel.framework.network.interceptor.AuthorizationInterceptor
