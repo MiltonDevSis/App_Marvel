@@ -1,4 +1,4 @@
-package com.mpfcoding.app_marvel.presentation.characters
+package com.mpfcoding.app_marvel.presentation.characters.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -26,7 +26,7 @@ class CharactersLoadMoreStateViewHolder(
     }
 
     companion object{
-        fun create(parent: ViewGroup, retry: () -> Unit): CharactersLoadMoreStateViewHolder{
+        fun create(parent: ViewGroup, retry: () -> Unit): CharactersLoadMoreStateViewHolder {
             val itemBinding = ItemCharacterLoadMoreStateBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
 

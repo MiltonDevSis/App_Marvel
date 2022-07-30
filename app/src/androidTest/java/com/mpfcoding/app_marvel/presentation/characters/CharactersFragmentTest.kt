@@ -10,6 +10,7 @@ import com.mpfcoding.app_marvel.extension.asJsonString
 import com.mpfcoding.app_marvel.framework.di.BaseUrlModule
 import com.mpfcoding.app_marvel.framework.di.CoroutinesModule
 import com.mpfcoding.app_marvel.launchFragmentInHiltContainer
+import com.mpfcoding.app_marvel.presentation.characters.adapters.CharactersViewHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules

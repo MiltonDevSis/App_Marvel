@@ -1,10 +1,8 @@
-package com.mpfcoding.app_marvel.presentation.characters
+package com.mpfcoding.app_marvel.presentation.characters.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.mpfcoding.app_marvel.R
 import com.mpfcoding.app_marvel.databinding.ItemCharacterBinding
 import com.mpfcoding.app_marvel.framework.imageloader.ImageLoader
 import com.mpfcoding.app_marvel.presentation.OnCharacterItemClick
