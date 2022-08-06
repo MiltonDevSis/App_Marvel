@@ -15,6 +15,7 @@ import com.mpfcoding.app_marvel.databinding.FragmentCharactersBinding
 import com.mpfcoding.app_marvel.framework.imageloader.ImageLoader
 import com.mpfcoding.app_marvel.presentation.characters.adapters.CharactersAdapter
 import com.mpfcoding.app_marvel.presentation.characters.adapters.CharactersLoadMoreStateAdapter
+import com.mpfcoding.app_marvel.presentation.characters.adapters.CharactersRefreshStateAdapter
 import com.mpfcoding.app_marvel.presentation.detail.DetailViewArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -32,6 +33,12 @@ class CharactersFragment : Fragment() {
     @Inject
     lateinit var imageLoader: ImageLoader
 
+    private val headerAdapter: CharactersRefreshStateAdapter by lazy {
+        CharactersRefreshStateAdapter(
+            charactersAdapter::retry
+        )
+    }
+
     private val charactersAdapter: CharactersAdapter by lazy {
         CharactersAdapter(imageLoader) { character, view ->
             val extras = FragmentNavigatorExtras(
@@ -41,7 +48,7 @@ class CharactersFragment : Fragment() {
             val directions = CharactersFragmentDirections
                 .actionCharactersFragmentToDetailFragment(
                     character.name,
-                    DetailViewArgs(
+                   DetailViewArgs(
                         characterId = character.id,
                         name = character.name,
                         imageUrl = character.imageUrl
@@ -71,13 +78,10 @@ class CharactersFragment : Fragment() {
         viewModel.state.observe(viewLifecycleOwner) { uiState ->
             when (uiState) {
                 is CharactersViewModel.UiState.SearchResult -> {
-                    lifecycleScope.launch {
-                        charactersAdapter.submitData(viewLifecycleOwner.lifecycle, uiState.data)
-                    }
+                    charactersAdapter.submitData(viewLifecycleOwner.lifecycle, uiState.data)
                 }
             }
         }
-
         viewModel.searchCharacter()
     }
 
@@ -85,7 +89,8 @@ class CharactersFragment : Fragment() {
         postponeEnterTransition()
         with(binding.recyclerCharacter) {
             setHasFixedSize(true)
-            adapter = charactersAdapter.withLoadStateFooter(
+            adapter = charactersAdapter.withLoadStateHeaderAndFooter(
+                header = headerAdapter,
                 footer = CharactersLoadMoreStateAdapter(
                     charactersAdapter::retry
                 )
@@ -100,8 +105,13 @@ class CharactersFragment : Fragment() {
     private fun observeInitialLoadState() {
         lifecycleScope.launch {
             charactersAdapter.loadStateFlow.collectLatest { loadState ->
-                binding.flipperCharacters.displayedChild = when {
+                headerAdapter.loadState = loadState.mediator
+                    ?.refresh
+                    ?.takeIf {
+                        it is LoadState.Error && charactersAdapter.itemCount > 0
+                    } ?: loadState.prepend
 
+                binding.flipperCharacters.displayedChild = when {
                     loadState.mediator?.refresh is LoadState.Loading -> {
                         setShimmerVisibility(true)
                         FLIPPER_CHILD_LOADING
@@ -133,9 +143,7 @@ class CharactersFragment : Fragment() {
             isVisible = visibility
             if (visibility) {
                 startShimmer()
-            } else {
-                stopShimmer()
-            }
+            } else stopShimmer()
         }
     }
 

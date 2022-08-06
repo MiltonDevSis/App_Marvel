@@ -7,7 +7,6 @@ import androidx.room.Query
 import com.mpfcoding.app_marvel.framework.db.entity.RemoteKey
 import com.mpfcoding.core.data.DbConstants
 
-// Classe de banco de dados
 @Dao
 interface RemoteKeyDao {
 
