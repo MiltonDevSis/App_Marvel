@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mpfcoding.app_marvel.R
 import com.mpfcoding.app_marvel.databinding.FragmentSortBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SortFragment : Fragment() {
+class SortFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentSortBinding? = null
     private val binding: FragmentSortBinding get() = _binding!!
