@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mpfcoding.app_marvel.R
 import com.mpfcoding.app_marvel.databinding.ActivityMainBinding
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbarApp)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_container) as NavHostFragment
 
@@ -30,10 +32,12 @@ class MainActivity : AppCompatActivity() {
             setOf(  // <- declaração dos fragments, top level que não vão aparecer a seta de back button.
                 R.id.charactersFragment,
                 R.id.favoritesFragment,
-                R.id.aboutFragment
+                R.id.aboutFragment,
+                R.id.sortFragment
             )
         )
 
+        setupActionBarWithNavController(navController, appBarConfiguration)
         binding.toolbarApp.setupWithNavController(navController, appBarConfiguration)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->

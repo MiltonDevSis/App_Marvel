@@ -2,6 +2,9 @@ package com.mpfcoding.app_marvel.presentation.characters
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -11,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.mpfcoding.app_marvel.R
 import com.mpfcoding.app_marvel.databinding.FragmentCharactersBinding
 import com.mpfcoding.app_marvel.framework.imageloader.ImageLoader
 import com.mpfcoding.app_marvel.presentation.characters.adapters.CharactersAdapter
@@ -48,7 +52,7 @@ class CharactersFragment : Fragment() {
             val directions = CharactersFragmentDirections
                 .actionCharactersFragmentToDetailFragment(
                     character.name,
-                   DetailViewArgs(
+                    DetailViewArgs(
                         characterId = character.id,
                         name = character.name,
                         imageUrl = character.imageUrl
@@ -57,6 +61,11 @@ class CharactersFragment : Fragment() {
 
             findNavController().navigate(directions, extras)
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -144,6 +153,20 @@ class CharactersFragment : Fragment() {
             if (visibility) {
                 startShimmer()
             } else stopShimmer()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.characters_menu_items, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_sort -> {
+                findNavController().navigate(R.id.action_charactersFragment_to_sortFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
