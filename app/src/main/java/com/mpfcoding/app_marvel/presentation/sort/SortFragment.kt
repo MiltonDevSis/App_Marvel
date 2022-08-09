@@ -34,4 +34,6 @@ class SortFragment : BottomSheetDialogFragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    infix fun Int.add(add: Int) = this + 1
 }
