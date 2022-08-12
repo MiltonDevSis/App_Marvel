@@ -14,6 +14,8 @@ import com.mpfcoding.core.usecase.GetFavoritesUseCase
 import com.mpfcoding.core.usecase.GetFavoritesUseCaseImpl
 import com.mpfcoding.core.usecase.RemoveFavoriteUseCase
 import com.mpfcoding.core.usecase.RemoveFavoriteUseCaseImpl
+import com.mpfcoding.core.usecase.SaveCharacterSortingUseCase
+import com.mpfcoding.core.usecase.SaveCharacterSortingUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -50,5 +52,10 @@ interface UseCaseModule {
     fun bindGetCharactersSortingUseCase(
         useCase: GetCharactersSortingUseCaseImpl
     ): GetCharacterSortingUseCase
+
+    @Binds
+    fun bindSaveCharactersSortingUseCase(
+        useCase: SaveCharacterSortingUseCaseImpl
+    ): SaveCharacterSortingUseCase
 }
 
