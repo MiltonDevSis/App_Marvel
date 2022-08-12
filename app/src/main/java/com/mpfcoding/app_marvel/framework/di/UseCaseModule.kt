@@ -1,13 +1,15 @@
 package com.mpfcoding.app_marvel.framework.di
 
-import com.mpfcoding.core.usecase.GetCharactersUseCase
-import com.mpfcoding.core.usecase.GetCharactersUseCaseImpl
-import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
-import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCaseImpl
 import com.mpfcoding.core.usecase.AddFavoriteUseCase
 import com.mpfcoding.core.usecase.AddFavoriteUseCaseImpl
 import com.mpfcoding.core.usecase.CheckFavoriteUseCase
 import com.mpfcoding.core.usecase.CheckFavoriteUseCaseImpl
+import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCase
+import com.mpfcoding.core.usecase.GetCharacterCategoriesUseCaseImpl
+import com.mpfcoding.core.usecase.GetCharacterSortingUseCase
+import com.mpfcoding.core.usecase.GetCharactersSortingUseCaseImpl
+import com.mpfcoding.core.usecase.GetCharactersUseCase
+import com.mpfcoding.core.usecase.GetCharactersUseCaseImpl
 import com.mpfcoding.core.usecase.GetFavoritesUseCase
 import com.mpfcoding.core.usecase.GetFavoritesUseCaseImpl
 import com.mpfcoding.core.usecase.RemoveFavoriteUseCase
@@ -43,5 +45,10 @@ interface UseCaseModule {
 
     @Binds
     fun bindGetFavoriteUseCase(useCase: GetFavoritesUseCaseImpl): GetFavoritesUseCase
+
+    @Binds
+    fun bindGetCharactersSortingUseCase(
+        useCase: GetCharactersSortingUseCaseImpl
+    ): GetCharacterSortingUseCase
 }
 
