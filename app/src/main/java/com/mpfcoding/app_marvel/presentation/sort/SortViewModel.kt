@@ -10,7 +10,6 @@ import com.mpfcoding.core.usecase.GetCharacterSortingUseCase
 import com.mpfcoding.core.usecase.SaveCharacterSortingUseCase
 import com.mpfcoding.core.usecase.base.CoroutinesDispatchers
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @HiltViewModel
