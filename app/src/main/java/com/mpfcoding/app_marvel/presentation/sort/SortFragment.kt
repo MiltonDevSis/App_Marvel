@@ -50,6 +50,10 @@ class SortFragment : BottomSheetDialogFragment() {
             val chip = group.findViewById<Chip>(checkedId)
             order = getOrderValue(chip.id)
         }
+
+        binding.buttonApplySort.setOnClickListener {
+            viewModel.applySorting(orderBy, order)
+        }
     }
 
     private fun getOrderByValue(chipId: Int): String = when (chipId) {
