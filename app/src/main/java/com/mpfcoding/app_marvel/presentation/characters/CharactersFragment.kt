@@ -10,6 +10,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -21,6 +24,7 @@ import com.mpfcoding.app_marvel.presentation.characters.adapters.CharactersAdapt
 import com.mpfcoding.app_marvel.presentation.characters.adapters.CharactersLoadMoreStateAdapter
 import com.mpfcoding.app_marvel.presentation.characters.adapters.CharactersRefreshStateAdapter
 import com.mpfcoding.app_marvel.presentation.detail.DetailViewArgs
+import com.mpfcoding.app_marvel.presentation.sort.SortFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -83,6 +87,7 @@ class CharactersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initCharactersAdapter()
         observeInitialLoadState()
+        observeSortingData()
 
         viewModel.state.observe(viewLifecycleOwner) { uiState ->
             when (uiState) {
@@ -154,6 +159,30 @@ class CharactersFragment : Fragment() {
                 startShimmer()
             } else stopShimmer()
         }
+    }
+
+    private fun observeSortingData() {
+        val navBackStackEntry = findNavController().getBackStackEntry(R.id.charactersFragment)
+        val observer = LifecycleEventObserver { _, event ->
+            val isSortingApplied = navBackStackEntry.savedStateHandle.contains(
+                SortFragment.SORTING_APPLIED_BASK_STACK_KEY
+            )
+
+            if (event == Lifecycle.Event.ON_RESUME && isSortingApplied){
+                // call api
+                navBackStackEntry.savedStateHandle.remove<Boolean>(
+                    SortFragment.SORTING_APPLIED_BASK_STACK_KEY
+                )
+            }
+        }
+
+        navBackStackEntry.lifecycle.addObserver(observer)
+
+        viewLifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_DESTROY) {
+                navBackStackEntry.lifecycle.removeObserver(observer)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
