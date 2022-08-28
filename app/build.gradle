@@ -153,6 +153,7 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     def hypirion_version = '0.9.34'
     debugImplementation "com.willowtreeapps.hyperion:hyperion-core:$hypirion_version"
