@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
@@ -24,13 +23,18 @@ class CharactersViewModel @Inject constructor(
     coroutinesDispatchers: CoroutinesDispatchers
 ) : ViewModel() {
 
+    var currentSearchQuery = ""
+
     private val action = MutableLiveData<Action>()
     val state: LiveData<UiState> = action
         .switchMap { action ->
-            when(action){
+            when (action) {
                 is Action.Search, Action.Sort -> {
                     getCharactersUseCase(
-                        GetCharactersUseCase.GetCharactersParams("", getPageConfig())
+                        GetCharactersUseCase.GetCharactersParams(
+                            currentSearchQuery,
+                            getPageConfig()
+                        )
                     ).cachedIn(viewModelScope).map {
                         UiState.SearchResult(it)
                     }.asLiveData(coroutinesDispatchers.main())
@@ -48,8 +52,8 @@ class CharactersViewModel @Inject constructor(
         pageSize = 20
     )
 
-    fun searchCharacter(query: String = "") {
-        action.value = Action.Search(query)
+    fun searchCharacter() {
+        action.value = Action.Search
     }
 
     fun applySort() {
@@ -61,7 +65,7 @@ class CharactersViewModel @Inject constructor(
     }
 
     sealed class Action {
-        data class Search(val query: String) : Action()
-        object Sort: Action()
+        object Search : Action()
+        object Sort : Action()
     }
 }
